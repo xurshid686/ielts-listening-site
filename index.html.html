@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>IELTS Listening – Full CDI Practice Test</title>
+<style>
+  :root{--grey:#f1f2ec;--border:#d9d9d9;--ok:#28a745;--bad:#dc3545;--ink:#333;--accent:#4a90e2}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;background:#f3f8ff;color:var(--ink);line-height:1.58;
+       display:flex;flex-direction:column;align-items:center;padding:24px 16px 100px}
+  .container{width:100%;max-width:980px}
+  h1.title{font-size:22px;text-align:center;margin:6px 0 14px}
+  .score-banner{margin:10px 0 18px;padding:10px 14px;border-left:6px solid var(--ok);background:#e9f7ef;font-weight:700;display:none}
+  .progress{margin:0 0 12px;color:#666}
+
+  /* audio */
+  .audio-bar{display:flex;align-items:center;gap:10px;background:#eaf2ff;border:1px solid #c9d8ff;padding:10px 12px;border-radius:8px;margin-bottom:10px;flex-wrap:wrap}
+  .audio-btn{border:none;border-radius:6px;padding:8px 14px;font-weight:700;background:#4a90e2;color:#fff;cursor:pointer}
+  .audio-time{color:#365;font-size:14px}
+  .small-btn{border:1px solid #ccc;border-radius:6px;background:#fff;padding:6px 10px;cursor:pointer}
+
+  /* headers & instructions */
+  .part-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;font-weight:700}
+  .instruction{margin:4px 0 12px;text-align:center}
+
+  /* paper */
+  .paper{border:1px solid #111;background:#fff;padding:22px;border-radius:6px}
+  .paper h2{margin:0 0 12px;text-align:center;font-size:20px}
+  .paper h3{margin:18px 0 8px;font-size:18px}
+  ul{margin-left:20px}
+  li{margin:8px 0}
+
+  /* text inputs */
+  .text-input{min-width:95px;max-width:220px;width:150px;height:36px;line-height:34px;border:1px solid #666;border-radius:4px;padding:0 8px;margin:0 4px;text-align:center;font-size:16px;background:var(--grey)}
+  .text-input.correct{background:#d4edda!important;border-color:var(--ok)!important;color:#155724!important}
+  .text-input.incorrect{background:#f8d7da!important;border-color:var(--bad)!important;color:#721c24!important}
+  .sm{width:110px}
+
+  /* dropdowns (map) */
+  select{width:100px;height:36px;border:1px solid #666;border-radius:6px;padding:0 8px;font-size:15px;background:#fff}
+  select.correct{background:#d4edda!important;border-color:var(--ok)!important;color:#155724!important}
+  select.incorrect{background:#f8d7da!important;border-color:var(--bad)!important;color:#721c24!important}
+
+  /* drag & drop */
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{padding:8px 12px;border:2px solid var(--accent);border-radius:10px;background:#eaf3ff;font-weight:700;cursor:grab;user-select:none;white-space:nowrap}
+  .opt:active{cursor:grabbing}
+  .row{display:flex;align-items:center;gap:14px;padding:8px 10px;margin:8px 0;border-radius:8px;background:#fff}
+  .num{width:34px;text-align:right;font-weight:700}
+  .label{flex:1}
+  .drop{min-width:110px;min-height:36px;display:flex;align-items:center;justify-content:center;border:2px dashed #bbb;border-radius:10px;background:#fff;font-weight:700;color:#555}
+  .drop.drag-hover{outline:2px solid var(--accent)}
+  .drag-ok{background:#d4edda}
+  .drag-bad{background:#f8d7da}
+
+  /* map layout (part 2, q20–26) */
+  .wrap{display:grid;grid-template-columns:1fr;gap:18px}
+  .map img{width:100%;height:auto;display:block;border-radius:4px}
+  .qs{display:grid;grid-template-columns:1fr;gap:8px}
+  @media (min-width:900px){.wrap{grid-template-columns:1.2fr .8fr}}
+
+  /* paired sets counter */
+  .counter{font-size:12px;color:#666;margin-top:4px}
+
+  /* navbar */
+  .navbar{display:flex;align-items:center;gap:18px;padding:8px 12px;border-top:1px solid #ccc;position:fixed;bottom:0;left:0;right:0;background:#fff;z-index:100;overflow-x:auto;white-space:nowrap}
+  .nav-label{font-weight:bold;margin-right:6px;cursor:pointer}
+  .sub-nav{display:none;gap:4px}
+  .nav-btn{width:30px;height:30px;line-height:28px;border:1px solid #ccc;border-radius:3px;text-align:center;cursor:pointer;font-size:14px;background:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center}
+  .nav-btn.answered{background:#add8e6;border-color:#0000ff;color:#000}
+  .nav-btn.correct{background:var(--ok);border-color:var(--ok);color:#fff}
+  .nav-btn.incorrect{background:var(--bad);border-color:var(--bad);color:#fff}
+  #submit-btn{padding:10px 12px;border:none;border-radius:4px;background:#4a90e2;color:#fff;cursor:pointer;font-weight:bold;font-size:16px;margin-left:auto}
+
+  /* parts visibility */
+  .test-part{display:none}
+  .test-part.active{display:block}
+
+  /* highlight UI */
+  .mini-toolbar{position:absolute;background:#fff;border:1px solid #ccc;padding:6px 8px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15);display:none;z-index:10000}
+  .mini-toolbar button{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 10px;margin:0 4px;cursor:pointer;font-size:13px}
+  .mini-toolbar .remove{background:var(--bad)}
+
+  .hl{background:#f4c20d88; box-decoration-break:clone; cursor:pointer}
+  .correct-answer{font-size:14px;color:#155724;margin-left:6px}
+
+  @media print{body{padding:0}.navbar,.audio-bar,.mini-toolbar{display:none!important}}
+
+/* --- Disable/neutralize browser autofill styling --- */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--grey) inset;
+  -webkit-text-fill-color: var(--ink);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+
+/* --- Pale blue background for all inputs --- */
+.text-input, textarea, input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
+  background-color: #d6eaf8 !important;
+}
+
+
+/* --- Pale blue background for entire test --- */
+body, .test-container, .section, .part {
+  background-color: #d6eaf8 !important;
+}
+
+
+/* --- Pale blue background for content areas too --- */
+body, .test-container, .section, .part, .content, .container, .main, .question, .card, .wrapper {
+  background-color: #d6eaf8 !important;
+}
+
+
+/* --- Force pale blue everywhere --- */
+body, html, div, main, section, article {
+  background-color: #d6eaf8 !important;
+}
+
+
+/* --- Remove lines in Part Four --- */
+.part-4 hr, .part-4, .part4, #part4, .section-4 {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+
+/* --- Pale blue background for table headers/first row --- */
+table th, table thead tr, table thead td {
+  background-color: #d6eaf8 !important;
+}
+/* Also style first row of tables in case headers are not using <th> */
+table tr:first-child td {
+  background-color: #d6eaf8 !important;
+  font-weight: bold;
+}
+
+
+/* === Name gate overlay === */
+#gate{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;
+  z-index:20000
+}
+.gate-card{
+  background:#ffffff;width:min(520px,92%);border-radius:12px;
+  padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.25);
+  border:1px solid #d9d9d9
+}
+.gate-card h2{margin:0 0 8px;text-align:center}
+.gate-row{display:flex;gap:10px;margin-top:10px}
+.gate-row input{
+  flex:1;height:42px;font-size:16px;padding:0 10px;
+  border:1px solid #666;border-radius:8px;background:#d6eaf8
+}
+.gate-row button{
+  height:42px;padding:0 16px;border:none;border-radius:8px;
+  background:#4a90e2;color:#fff;font-weight:700;cursor:pointer
+}
+.gate-note{font-size:13px;color:#555;text-align:center;margin-top:8px}
+
+</style>
+</head>
+<body>
+<!-- === Compulsory name gate === -->
+<div id="gate" role="dialog" aria-modal="true" style="display:flex">
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <h2>Enter your name to start</h2>
+    <div class="gate-row">
+      <input id="studentNameGate" name="studentNameGate" placeholder="Your full name" required />
+      <button type="submit">Start test</button>
+    </div>
+    <div class="gate-note">Your name will be attached to your result.</div>
+  </form>
+</div>
+
+  <!-- highlight toolbars -->
+  <div id="addToolbar" class="mini-toolbar"><button id="addHL">Highlight</button></div>
+  <div id="removeToolbar" class="mini-toolbar"><button id="removeHL" class="remove">Remove highlight</button></div>
+
+  <div class="container">
+    <!-- audio -->
+    <div class="audio-bar">
+      <span id="audioError" style="display:none;color:#b00020;font-weight:700">Audio failed to load. Check your connection or try again.</span>
+      <button id="audioBtn" class="audio-btn" type="button">► Play audio</button>
+      <span class="audio-time" id="audioTime">00:00 / 00:00</span>
+    </div>
+    <audio id="testAudio" preload="metadata">
+      <source src="https://raw.githubusercontent.com/xurshid686/test-26-audio/f13fc4c3203df0c2778008d08e7727cdc4d4fb52/jyj4q-9wetp.mp3" type="audio/mpeg"/>
+    </audio>
+
+    <h1 class="title">IELTS Listening – Full Practice Test</h1>
+    <div id="scoreBanner" class="score-banner"></div>
+    <div id="progress" class="progress">Progress: 0/49 answered</div>
+
+    <!-- ===== PART 1 (Q1–13) ===== -->
+    <section id="part1" class="test-part active">
+      <div class="part-head"><div><strong>PART 1</strong></div><div><em>Questions 1–13</em></div></div>
+      <p class="instruction">Complete the notes below.</p>
+      <p class="instruction"><strong>Write ONE WORD AND/OR A NUMBER</strong> for each answer.</p>
+      <div class="paper">
+        <h2>Buying tickets to the theatre</h2>
+
+        <h3><strong>Nimrod Theatre Company</strong></h3>
+        <ul>
+          <li>The Theatre is near the <input id="q1" class="text-input" placeholder="1." aria-label="Q1"></li>
+          <li>Shows this season are a mix of drama and <input id="q2" class="text-input" placeholder="2." aria-label="Q2"></li>
+          <li>Do not miss the play with <input id="q3" class="text-input" placeholder="3." aria-label="Q3"> this year</li>
+        </ul>
+
+        <h3><strong>Season ticket packages</strong></h3>
+        <ul>
+          <li>There are three packages; the best value is the <input id="q4" class="text-input" placeholder="4." aria-label="Q4"> package.</li>
+          <li>Changing the date of a ticket costs $ <input id="q5" class="text-input sm" placeholder="5." aria-label="Q5"></li>
+          <li>Theatre Club shows are in the <input id="q6" class="text-input" placeholder="6." aria-label="Q6"> (they include a pre-show <input id="q7" class="text-input sm" placeholder="7." aria-label="Q7">)</li>
+          <li>At the season briefing, it is possible to meet a <input id="q8" class="text-input" placeholder="8." aria-label="Q8"></li>
+          <li>The company emails the <input id="q9" class="text-input" placeholder="9." aria-label="Q9"> before each performance.</li>
+        </ul>
+
+        <h3><strong>Booking information</strong></h3>
+        <ul>
+          <li>When booking tickets, it is possible to pay for <input id="q10" class="text-input" placeholder="10." aria-label="Q10"> in advance.</li>
+          <li>The theatre is good for people with <input id="q11" class="text-input" placeholder="11." aria-label="Q11"> problems.</li>
+          <li>Ask for seats together (try to sit near the <input id="q12" class="text-input sm" placeholder="12." aria-label="Q12">)</li>
+        </ul>
+
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span>Name of the recommended restaurant:</span>
+          <span style="flex:1;min-width:220px">
+            <input id="q13" class="text-input" placeholder="13." aria-label="Q13" style="width:100%;max-width:100%">
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PART 2 (Q14–26) ===== -->
+    <section id="part2" class="test-part">
+      <div class="part-head"><div><strong>PART 2</strong></div><div><em>Questions 14–26</em></div></div>
+
+      <!-- 14–19 Drag & Drop -->
+      <div class="paper" style="margin-bottom:16px">
+        <h2>Important information about events</h2>
+        <p class="instruction"><strong>What important information does the speaker give about each of the following events?</strong></p>
+        <p style="text-align:center;margin-top:-6px">Choose <strong>SIX</strong> answers (A–H) and drag one letter to each event.</p>
+        <div class="opts" id="opts14">
+          <div class="opt" id="A" draggable="true">A The starting time has changed.</div>
+          <div class="opt" id="B" draggable="true">B Special lighting is required.</div>
+          <div class="opt" id="C" draggable="true">C It needs space for a larger sign.</div>
+          <div class="opt" id="D" draggable="true">D There is a charge for this event.</div>
+          <div class="opt" id="E" draggable="true">E It will involve a local celebrity.</div>
+          <div class="opt" id="F" draggable="true">F It will go on for longer than planned.</div>
+          <div class="opt" id="G" draggable="true">G It will be in a new location.</div>
+          <div class="opt" id="H" draggable="true">H It has been cancelled.</div>
+        </div>
+        <div class="row" id="q14_row"><div class="num">14</div><div class="label">Choir performance</div><div class="drop" data-question="14" data-box="opts14"></div><input type="hidden" id="q14"/></div>
+        <div class="row" id="q15_row"><div class="num">15</div><div class="label">Cake competition</div><div class="drop" data-question="15" data-box="opts14"></div><input type="hidden" id="q15"/></div>
+        <div class="row" id="q16_row"><div class="num">16</div><div class="label">Bush band</div><div class="drop" data-question="16" data-box="opts14"></div><input type="hidden" id="q16"/></div>
+        <div class="row" id="q17_row"><div class="num">17</div><div class="label">Fashion show</div><div class="drop" data-question="17" data-box="opts14"></div><input type="hidden" id="q17"/></div>
+        <div class="row" id="q18_row"><div class="num">18</div><div class="label">Dance performance</div><div class="drop" data-question="18" data-box="opts14"></div><input type="hidden" id="q18"/></div>
+        <div class="row" id="q19_row"><div class="num">19</div><div class="label">Art exhibition</div><div class="drop" data-question="19" data-box="opts14"></div><input type="hidden" id="q19"/></div>
+      </div>
+
+      <!-- 20–26 Map dropdowns -->
+      <div class="paper">
+        <h2>Cranfield Summer Festival – Map</h2>
+        <div class="wrap">
+          <div class="map">
+            <a href="https://ibb.co/NgDnv7L4">
+              <img src="https://i.ibb.co/fV6GgQCc/Screenshot-2025-08-19-140150.png" alt="Festival map A–J">
+            </a>
+          </div>
+          <div class="qs">
+            <div class="row" id="q20_row"><div class="num">20</div><div class="label">Second-hand books</div>
+              <select id="q20"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+            <div class="row" id="q21_row"><div class="num">21</div><div class="label">Food hall</div>
+              <select id="q21"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+            <div class="row" id="q22_row"><div class="num">22</div><div class="label">Rides and amusements</div>
+              <select id="q22"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+            <div class="row" id="q23_row"><div class="num">23</div><div class="label">Baby farm animals</div>
+              <select id="q23"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+            <div class="row" id="q24_row"><div class="num">24</div><div class="label">Toys and games</div>
+              <select id="q24"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+            <div class="row" id="q25_row"><div class="num">25</div><div class="label">Vintage clothes</div>
+              <select id="q25"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+            <div class="row" id="q26_row"><div class="num">26</div><div class="label">Garden plants</div>
+              <select id="q26"><option value="" disabled selected>—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PART 3 (Q27–39) ===== -->
+    <section id="part3" class="test-part">
+      <div class="part-head"><div><strong>PART 3</strong></div><div><em>Questions 27–39</em></div></div>
+
+      <!-- 27–33 Drag & Drop -->
+      <div class="paper" style="margin-bottom:16px">
+        <h2>Rivers – What points do the speakers make?</h2>
+        <p class="instruction"><strong>What points do the speakers make about each of the following rivers?</strong></p>
+        <div class="opts" id="opts27">
+          <div class="opt" id="A" draggable="true">A introduced species can harm a river</div>
+          <div class="opt" id="B" draggable="true">B mining impact on rivers</div>
+          <div class="opt" id="C" draggable="true">C environmental campaigns save rivers</div>
+          <div class="opt" id="D" draggable="true">D economic effects of a river system</div>
+          <div class="opt" id="E" draggable="true">E reduction in water volume</div>
+          <div class="opt" id="F" draggable="true">F pollution on river health</div>
+          <div class="opt" id="G" draggable="true">G urban development impact</div>
+          <div class="opt" id="H" draggable="true">H long repair period</div>
+          <div class="opt" id="I" draggable="true">I illegal use of water</div>
+        </div>
+        <div class="row" id="q27_row"><div class="num">27</div><div class="label">Barcaldine River</div><div class="drop" data-question="27" data-box="opts27"></div><input type="hidden" id="q27"/></div>
+        <div class="row" id="q28_row"><div class="num">28</div><div class="label">Diamond River</div><div class="drop" data-question="28" data-box="opts27"></div><input type="hidden" id="q28"/></div>
+        <div class="row" id="q29_row"><div class="num">29</div><div class="label">Nerang River</div><div class="drop" data-question="29" data-box="opts27"></div><input type="hidden" id="q29"/></div>
+        <div class="row" id="q30_row"><div class="num">30</div><div class="label">Cooma River</div><div class="drop" data-question="30" data-box="opts27"></div><input type="hidden" id="q30"/></div>
+        <div class="row" id="q31_row"><div class="num">31</div><div class="label">Koornang River</div><div class="drop" data-question="31" data-box="opts27"></div><input type="hidden" id="q31"/></div>
+        <div class="row" id="q32_row"><div class="num">32</div><div class="label">Yass River</div><div class="drop" data-question="32" data-box="opts27"></div><input type="hidden" id="q32"/></div>
+        <div class="row" id="q33_row"><div class="num">33</div><div class="label">Blythe River</div><div class="drop" data-question="33" data-box="opts27"></div><input type="hidden" id="q33"/></div>
+      </div>
+
+      <!-- 34–39 Choose TWO (paired scoring) -->
+      <div class="paper">
+        <h2>Choose TWO letters, A–E</h2>
+
+        <div class="block" id="g1" style="margin-bottom:12px">
+          <p><strong>Questions 34 and 35</strong> — Which TWO aspects of the Murray–Darling river system do the speakers <em>disagree</em> about?</p>
+          <div role="group" aria-labelledby="g1" class="optlist" style="border:1px solid #c9c9c9;border-radius:6px;padding:8px 10px">
+            <div><label><input type="checkbox" id="g1a" data-group="g1"> <strong>A.</strong> the importance of the river system to Australia</label></div>
+            <div><label><input type="checkbox" id="g1b" data-group="g1"> <strong>B.</strong> how successful the government’s recovery plan will be</label></div>
+            <div><label><input type="checkbox" id="g1c" data-group="g1"> <strong>C.</strong> the main causes of the decline of the river system</label></div>
+            <div><label><input type="checkbox" id="g1d" data-group="g1"> <strong>D.</strong> the predicted effects of future climate changes</label></div>
+            <div><label><input type="checkbox" id="g1e" data-group="g1"> <strong>E.</strong> the actions that local farmers need to take</label></div>
+            <div class="counter" id="g1_count">0/2 selected</div>
+          </div>
+        </div>
+
+        <div class="block" id="g2" style="margin-bottom:12px">
+          <p><strong>Questions 36 and 37</strong> — Which TWO aspects of the river system do the speakers <em>lack statistics</em> on?</p>
+          <div role="group" aria-labelledby="g2" class="optlist" style="border:1px solid #c9c9c9;border-radius:6px;padding:8px 10px">
+            <div><label><input type="checkbox" id="g2a" data-group="g2"> <strong>A.</strong> the value of the river system to the tourism industry</label></div>
+            <div><label><input type="checkbox" id="g2b" data-group="g2"> <strong>B.</strong> the importance of fishing to local areas along the river system</label></div>
+            <div><label><input type="checkbox" id="g2c" data-group="g2"> <strong>C.</strong> how much drinking water is supplied by the river system</label></div>
+            <div><label><input type="checkbox" id="g2d" data-group="g2"> <strong>D.</strong> the size of the agricultural industry that the river system supports</label></div>
+            <div><label><input type="checkbox" id="g2e" data-group="g2"> <strong>E.</strong> the different types of wildlife that inhabit the river system</label></div>
+            <div class="counter" id="g2_count">0/2 selected</div>
+          </div>
+        </div>
+
+        <div class="block" id="g3">
+          <p><strong>Questions 38 and 39</strong> — Which TWO negative opinions do the speakers express about the Jones study?</p>
+          <div role="group" aria-labelledby="g3" class="optlist" style="border:1px solid #c9c9c9;border-radius:6px;padding:8px 10px">
+            <div><label><input type="checkbox" id="g3a" data-group="g3"> <strong>A.</strong> It makes use of limited research.</label></div>
+            <div><label><input type="checkbox" id="g3b" data-group="g3"> <strong>B.</strong> It has a lack of useful visual information.</label></div>
+            <div><label><input type="checkbox" id="g3c" data-group="g3"> <strong>C.</strong> It only presents certain viewpoints.</label></div>
+            <div><label><input type="checkbox" id="g3d" data-group="g3"> <strong>D.</strong> It fails to suggest certain future solutions.</label></div>
+            <div><label><input type="checkbox" id="g3e" data-group="g3"> <strong>E.</strong> It focuses on one geographical area.</label></div>
+            <div class="counter" id="g3_count">0/2 selected</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PART 4 (Q40–49) ===== -->
+    <section id="part4" class="test-part">
+      <div class="part-head"><div><strong>PART 4</strong></div><div><em>Questions 40–49</em></div></div>
+      <p class="instruction">Complete the table below. <strong>Write ONE WORD ONLY</strong> for each answer.</p>
+
+      <div class="paper">
+        <h2>Early maps</h2>
+        <table aria-label="Early maps table" style="width:100%;border-collapse:collapse;margin-top:8px">
+          <thead><tr><th style="border:1px solid #222;padding:10px 12px;width:22%;text-align:left;background:#fafafa">Place</th><th style="border:1px solid #222;padding:10px 12px;width:38%;text-align:left;background:#fafafa">Material</th><th style="border:1px solid #222;padding:10px 12px;width:40%;text-align:left;background:#fafafa">What it shows</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">Mesopotamia</td>
+              <td style="border:1px solid #222;padding:10px 12px">flat pieces of clay</td>
+              <td style="border:1px solid #222;padding:10px 12px">
+                <ul style="margin:0 0 0 20px">
+                  <li><input id="q40" class="text-input sm" aria-label="Q40" placeholder="40."> and other settlements</li>
+                  <li>water sources</li>
+                  <li><input id="q41" class="text-input sm" aria-label="Q41" placeholder="41."></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">North America</td>
+              <td style="border:1px solid #222;padding:10px 12px"><input id="q42" class="text-input sm" aria-label="Q42" placeholder="42."> marked with lines</td>
+              <td style="border:1px solid #222;padding:10px 12px">coastlines</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">Polynesia</td>
+              <td style="border:1px solid #222;padding:10px 12px">shells and twigs inserted into structure made of <input id="q43" class="text-input sm" aria-label="Q43" placeholder="43."></td>
+              <td style="border:1px solid #222;padding:10px 12px">
+                <ul style="margin:0 0 0 20px">
+                  <li>islands</li>
+                  <li>currents and <input id="q44" class="text-input sm" aria-label="Q44" placeholder="44."></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">China</td>
+              <td style="border:1px solid #222;padding:10px 12px">plates made of <input id="q45" class="text-input sm" aria-label="Q45" placeholder="45."></td>
+              <td style="border:1px solid #222;padding:10px 12px"></td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">Egypt</td>
+              <td style="border:1px solid #222;padding:10px 12px"></td>
+              <td style="border:1px solid #222;padding:10px 12px">shape of the earth</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 style="margin-top:8px">Later development of maps</h2>
+        <table aria-label="Later development of maps" style="width:100%;border-collapse:collapse;margin-top:8px">
+          <thead><tr><th style="border:1px solid #222;padding:10px 12px;width:22%;text-align:left;background:#fafafa">Date</th><th style="border:1px solid #222;padding:10px 12px;width:78%;text-align:left;background:#fafafa">Development</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">Mid-15<sup>th</sup> century</td>
+              <td style="border:1px solid #222;padding:10px 12px"><ul style="margin:0 0 0 20px"><li>Greater availability of maps because of developments in new <input id="q46" class="text-input sm" aria-label="Q46" placeholder="46."> technology</li></ul></td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">1507</td>
+              <td style="border:1px solid #222;padding:10px 12px"><ul style="margin:0 0 0 20px"><li>First map of the <input id="q47" class="text-input sm" aria-label="Q47" placeholder="47."> as known to Europeans</li><li>America shown as a <input id="q48" class="text-input sm" aria-label="Q48" placeholder="48."></li></ul></td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #222;padding:10px 12px">1513</td>
+              <td style="border:1px solid #222;padding:10px 12px"><ul style="margin:0 0 0 20px"><li>First known <input id="q49" class="text-input sm" aria-label="Q49" placeholder="49."> was produced</li></ul></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+      <span class="nav-label" onclick="showPart(1)">Part 1</span>
+      <div class="sub-nav" id="sub1">
+        <a href="#q1" class="nav-btn" id="nav1" data-q="1">1</a><a href="#q2" class="nav-btn" id="nav2" data-q="2">2</a><a href="#q3" class="nav-btn" id="nav3" data-q="3">3</a><a href="#q4" class="nav-btn" id="nav4" data-q="4">4</a><a href="#q5" class="nav-btn" id="nav5" data-q="5">5</a><a href="#q6" class="nav-btn" id="nav6" data-q="6">6</a><a href="#q7" class="nav-btn" id="nav7" data-q="7">7</a><a href="#q8" class="nav-btn" id="nav8" data-q="8">8</a><a href="#q9" class="nav-btn" id="nav9" data-q="9">9</a><a href="#q10" class="nav-btn" id="nav10" data-q="10">10</a><a href="#q11" class="nav-btn" id="nav11" data-q="11">11</a><a href="#q12" class="nav-btn" id="nav12" data-q="12">12</a><a href="#q13" class="nav-btn" id="nav13" data-q="13">13</a>
+      </div>
+      <span class="nav-label" onclick="showPart(2)">Part 2</span>
+      <div class="sub-nav" id="sub2">
+        <a href="#q14_row" class="nav-btn" id="nav14" data-q="14">14</a><a href="#q15_row" class="nav-btn" id="nav15" data-q="15">15</a><a href="#q16_row" class="nav-btn" id="nav16" data-q="16">16</a><a href="#q17_row" class="nav-btn" id="nav17" data-q="17">17</a><a href="#q18_row" class="nav-btn" id="nav18" data-q="18">18</a><a href="#q19_row" class="nav-btn" id="nav19" data-q="19">19</a><a href="#q20_row" class="nav-btn" id="nav20" data-q="20">20</a><a href="#q21_row" class="nav-btn" id="nav21" data-q="21">21</a><a href="#q22_row" class="nav-btn" id="nav22" data-q="22">22</a><a href="#q23_row" class="nav-btn" id="nav23" data-q="23">23</a><a href="#q24_row" class="nav-btn" id="nav24" data-q="24">24</a><a href="#q25_row" class="nav-btn" id="nav25" data-q="25">25</a><a href="#q26_row" class="nav-btn" id="nav26" data-q="26">26</a>
+      </div>
+      <span class="nav-label" onclick="showPart(3)">Part 3</span>
+      <div class="sub-nav" id="sub3">
+        <a href="#q27_row" class="nav-btn" id="nav27" data-q="27">27</a><a href="#q28_row" class="nav-btn" id="nav28" data-q="28">28</a><a href="#q29_row" class="nav-btn" id="nav29" data-q="29">29</a><a href="#q30_row" class="nav-btn" id="nav30" data-q="30">30</a><a href="#q31_row" class="nav-btn" id="nav31" data-q="31">31</a><a href="#q32_row" class="nav-btn" id="nav32" data-q="32">32</a><a href="#q33_row" class="nav-btn" id="nav33" data-q="33">33</a><a href="#g1" class="nav-btn" id="nav34" data-q="34">34</a><a href="#g1" class="nav-btn" id="nav35" data-q="35">35</a><a href="#g2" class="nav-btn" id="nav36" data-q="36">36</a><a href="#g2" class="nav-btn" id="nav37" data-q="37">37</a><a href="#g3" class="nav-btn" id="nav38" data-q="38">38</a><a href="#g3" class="nav-btn" id="nav39" data-q="39">39</a>
+      </div>
+      <span class="nav-label" onclick="showPart(4)">Part 4</span>
+      <div class="sub-nav" id="sub4">
+        <a href="#q40" class="nav-btn" id="nav40" data-q="40">40</a><a href="#q41" class="nav-btn" id="nav41" data-q="41">41</a><a href="#q42" class="nav-btn" id="nav42" data-q="42">42</a><a href="#q43" class="nav-btn" id="nav43" data-q="43">43</a><a href="#q44" class="nav-btn" id="nav44" data-q="44">44</a><a href="#q45" class="nav-btn" id="nav45" data-q="45">45</a><a href="#q46" class="nav-btn" id="nav46" data-q="46">46</a><a href="#q47" class="nav-btn" id="nav47" data-q="47">47</a><a href="#q48" class="nav-btn" id="nav48" data-q="48">48</a><a href="#q49" class="nav-btn" id="nav49" data-q="49">49</a>
+      </div>
+      <button id="submit-btn" type="button">Submit Answers</button>
+    </nav>
+  </div>
+
+
+<script>
+// === Name gate + reporting globals ===
+let TEST_STARTED = false;
+let STUDENT_NAME = '';
+let STARTED_AT_MS = null;
+
+// Replace these with your deployed endpoint + secret
+const REPORT_ENDPOINT = '/api/report';
+// (client no longer sends a secret; server holds all tokens)
+
+function openGate(){
+  const overlay = document.getElementById('gate');
+  if (overlay) overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { try{ document.getElementById('studentNameGate').focus(); } catch(_){} }, 0);
+}
+function closeGate(){
+  const overlay = document.getElementById('gate');
+  if (overlay) overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function reportToTeacher(summary){
+  if (!REPORT_ENDPOINT || REPORT_ENDPOINT.includes('<your-vercel>')) {
+    // Endpoint not configured yet; skip silently.
+    return { ok:false, skipped:true };
+  }
+  try {
+    const resp = await fetch(REPORT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',  },
+      body: JSON.stringify(summary)
+    });
+    return await resp.json();
+  } catch(e){
+    return { ok:false, error:String(e) };
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  openGate();
+  const form = document.getElementById('gateForm');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = (document.getElementById('studentNameGate').value || '').trim();
+    if (!name) return;
+    STUDENT_NAME = name;
+    STARTED_AT_MS = Date.now();
+    TEST_STARTED = true;
+    closeGate();
+    try{ window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
+  });
+});
+</script>
+<script>
+/* ---------- Audio ---------- */
+(function(){
+  const audio=document.getElementById('testAudio');
+  const btn=document.getElementById('audioBtn');
+  const time=document.getElementById('audioTime');
+  function fmt(s){if(isNaN(s)||!isFinite(s))return'00:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')}
+  function update(){time.textContent=`${fmt(audio.currentTime)} / ${fmt(audio.duration||0)}`}
+  btn.addEventListener('click',async()=>{try{if(audio.paused){await audio.play();btn.textContent='❚❚ Pause'}else{audio.pause();btn.textContent='► Play audio'}}catch(e){}});
+  audio.addEventListener('loadedmetadata',update); audio.addEventListener('timeupdate',update); audio.addEventListener('error',()=>{ const e=document.getElementById('audioError'); if(e) e.style.display='inline'; });
+})();
+
+/* ---------- Answer key (from image) ---------- */
+const keyText = {
+  1:['stadium'],
+  2:['musicals','musical'],
+  3:['puppets','puppet'],
+  4:['gold'],
+  5:['25','twentyfive','twenty-five'],
+  6:['afternoon'],
+  7:['discussion'],
+  8:['director'],
+  9:['program','programme'],
+ 10:['parking','carpark','car park'],
+ 11:['hearing'],
+ 12:['front'],
+ 13:['rafferty'],
+
+ 14:'F',15:'D',16:'A',17:'E',18:'C',19:'G',
+
+ 20:'A',21:'B',22:'E',23:'J',24:'H',25:'I',26:'C',
+
+ 27:'F',28:'G',29:'B',30:'A',31:'C',32:'E',33:'I',
+
+  '34-35':['B','E'],
+  '36-37':['A','C'],
+  '38-39':['B','D'],
+
+  40:['cities','city'],
+  41:['fields','field'],
+  42:['bones','bone'],
+  43:['leaves','leaf'],
+  44:['winds','wind'],
+  45:['wood'],
+  46:['printing'],
+  47:['world'],
+  48:['continent'],
+  49:['atlas']
+};
+
+/* ---------- Helpers ---------- */
+const norm = s => (s||'').toString().trim().toLowerCase().replace(/\s+/g,'');
+function markNav(q, ok){
+  const nav=document.getElementById('nav'+q);
+  if(!nav) return;
+  nav.classList.remove('correct','incorrect');
+  nav.classList.add(ok?'correct':'incorrect');
+  if(!ok) nav.classList.add('answered');
+}
+function showSolutionNextTo(el, text){
+  if(!el) return;
+  const span=document.createElement('span'); span.className='correct-answer';
+  span.textContent=' (Correct: '+text+')';
+  el.parentNode.insertBefore(span, el.nextSibling);
+}
+function clearFeedback(){
+  document.querySelectorAll('.correct,.incorrect,.drag-ok,.drag-bad').forEach(n=>n.classList.remove('correct','incorrect','drag-ok','drag-bad'));
+  document.querySelectorAll('.correct-answer').forEach(n=>n.remove());
+  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('correct','incorrect'));
+}
+
+/* ---------- Progress ---------- */
+function updateProgress(){
+  let c=0;
+  for(let i=1;i<=49;i++){
+    const nav=document.getElementById('nav'+i);
+    let filled=false;
+
+    if(i>=20 && i<=26){
+      const sel=document.getElementById('q'+i);
+      filled=!!(sel && sel.value);
+    }
+    else if((i>=14 && i<=19) || (i>=27 && i<=33)){
+      const hidden=document.getElementById('q'+i);
+      filled=!!(hidden && hidden.value);
+    }
+    else if(i>=34 && i<=39){
+      const grp = i<=35?'g1':i<=37?'g2':'g3';
+      const n=[...document.querySelectorAll(`input[data-group="${grp}"]`)].filter(x=>x.checked).length;
+      filled=n>0;
+    }
+    else{
+      const input=document.getElementById('q'+i);
+      filled=!!(input && input.value.trim());
+    }
+
+    if(nav) nav.classList.toggle('answered', filled);
+    if(filled) c++;
+  }
+  document.getElementById('progress').textContent=`Progress: ${c}/49 answered`;
+}
+
+/* ---------- Submit & Scoring ---------- */
+async function submitAnswers(){
+  clearFeedback();
+  let score=0;
+
+  // Q1–13 text
+  for(let i=1;i<=13;i++){
+    const input=document.getElementById('q'+i); if(!input) continue;
+    const val=norm(input.value);
+    if(!val) continue;
+    const answers=Array.isArray(keyText[i])?keyText[i]:[keyText[i]];
+    const ok=answers.some(a=>norm(a)===val);
+    if(ok) score++;
+    input.classList.add(ok?'correct':'incorrect');
+    markNav(i,ok);
+    if(!ok) showSolutionNextTo(input,answers[0]);
+  }
+
+  // 14–19 drag (A–H)
+  for(let i=14;i<=19;i++){
+    const hidden=document.getElementById('q'+i);
+    const row=document.getElementById(`q${i}_row`);
+    const val=(hidden?.value||'').toUpperCase();
+    const ok = val === keyText[i];
+    if(ok) score++;
+    if(row) row.classList.add(ok?'drag-ok':'drag-bad');
+    markNav(i,ok);
+    if(!ok && val){ const slot=row.querySelector('.drop'); showSolutionNextTo(slot,keyText[i]); }
+  }
+
+  // 20–26 map
+  for(let i=20;i<=26;i++){
+    const sel=document.getElementById('q'+i);
+    const val=(sel?.value||'').toUpperCase();
+    const ok = val === keyText[i];
+    if(ok) score++;
+    if(sel){ sel.classList.add(ok?'correct':'incorrect'); }
+    markNav(i,ok);
+    if(!ok && val) showSolutionNextTo(sel,keyText[i]);
+  }
+
+  // 27–33 drag (A–I)
+  for(let i=27;i<=33;i++){
+    const hidden=document.getElementById('q'+i);
+    const row=document.getElementById(`q${i}_row`);
+    const val=(hidden?.value||'').toUpperCase();
+    const ok = val === keyText[i];
+    if(ok) score++;
+    if(row) row.classList.add(ok?'drag-ok':'drag-bad');
+    markNav(i,ok);
+    if(!ok && val){ const slot=row.querySelector('.drop'); showSolutionNextTo(slot,keyText[i]); }
+  }
+
+  // 34–39 paired sets
+  const paired = [
+    {q:[34,35], id:'g1', ans:new Set(keyText['34-35'])},
+    {q:[36,37], id:'g2', ans:new Set(keyText['36-37'])},
+    {q:[38,39], id:'g3', ans:new Set(keyText['38-39'])},
+  ];
+  paired.forEach(set=>{
+    const chosen=[...document.querySelectorAll(`input[data-group="${set.id}"]:checked`)]
+                  .map(x=>x.id.slice(-1).toUpperCase());
+    const correctCount=chosen.filter(x=>set.ans.has(x)).length; // 0,1,2
+    score += correctCount; // 1 mark even if only one is right
+    set.q.forEach((q,idx)=>{
+      const letter = chosen[idx] || '';
+      const ok = set.ans.has(letter);
+      markNav(q, ok);
+      if(!ok && letter){
+        const blk = document.getElementById(set.id);
+        showSolutionNextTo(blk, Array.from(set.ans).join(' & '));
+      }
+    });
+  });
+
+  // 40–49 text
+  for(let i=40;i<=49;i++){
+    const input=document.getElementById('q'+i);
+    const val=norm(input?.value);
+    if(!val) continue;
+    const answers=Array.isArray(keyText[i])?keyText[i]:[keyText[i]];
+    const ok=answers.some(a=>norm(a)===val);
+    if(ok) score++;
+    input.classList.add(ok?'correct':'incorrect');
+    markNav(i,ok);
+    if(!ok) showSolutionNextTo(input,answers[0]);
+  }
+
+  const banner=document.getElementById('scoreBanner');
+  banner.textContent=`Score: ${score}/49 correct`;
+  banner.style.display='block';
+
+  // --- Auto-report to Telegram via your endpoint ---
+  try {
+    const payload = {
+      testId: document.title || 'IELTS Listening – Full CDI Practice Test',
+      studentName: STUDENT_NAME || 'Unknown',
+      score,
+      maxScore: 49,
+      startedAt: STARTED_AT_MS ? new Date(STARTED_AT_MS).toISOString() : undefined,
+      finishedAt: new Date().toISOString(),
+      durationSec: STARTED_AT_MS ? Math.round((Date.now() - STARTED_AT_MS)/1000) : undefined,
+      className: undefined,
+      detailsUrl: location.href
+    };
+    await reportToTeacher(payload);
+  } catch(_) {}
+
+  try{window.scrollTo({top:0,behavior:'smooth'});}catch(_){}
+}
+
+/* ---------- Drag & Drop (reusable) ---------- */
+function initDrag(containerId){
+  const box=document.getElementById(containerId);
+  function sortBox(){
+    Array.from(box.children).sort((a,b)=>a.id.localeCompare(b.id)).forEach(el=>box.appendChild(el));
+  }
+  box.addEventListener('dragover',e=>e.preventDefault());
+  box.addEventListener('drop',e=>{
+    e.preventDefault();
+    const dragged=document.querySelector('.opt.dragging');
+    if(!dragged) return;
+    const from=dragged.closest('.drop');
+    if(from){
+      const q=from.dataset.question;
+      document.getElementById('q'+q).value='';
+    }
+    box.appendChild(dragged); sortBox(); updateProgress();
+  });
+  box.querySelectorAll('.opt').forEach(opt=>{
+    opt.addEventListener('dragstart',e=>{opt.classList.add('dragging'); e.dataTransfer.setData('text/plain',opt.id);});
+    opt.addEventListener('dragend',()=>opt.classList.remove('dragging'));
+  });
+  document.querySelectorAll(`.drop[data-box="${containerId}"]`).forEach(drop=>{
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag-hover');});
+    drop.addEventListener('dragleave',()=>drop.classList.remove('drag-hover'));
+    drop.addEventListener('drop',e=>{
+      e.preventDefault();drop.classList.remove('drag-hover');
+      const dragged=document.querySelector('.opt.dragging'); if(!dragged) return;
+      const existing=drop.querySelector('.opt'); if(existing) box.appendChild(existing);
+      drop.appendChild(dragged);
+      const q=drop.dataset.question; document.getElementById('q'+q).value=dragged.id.toUpperCase();
+      sortBox(); updateProgress();
+    });
+  });
+}
+
+/* ---------- Choose TWO limiters ---------- */
+function initTwoOfFive(groupId){
+  const checks=[...document.querySelectorAll(`input[type="checkbox"][data-group="${groupId}"]`)];
+  const counter=document.getElementById(`${groupId}_count`);
+  function upd(){counter.textContent=`${checks.filter(c=>c.checked).length}/2 selected`; updateProgress();}
+  checks.forEach(ch=>{
+    ch.addEventListener('change',()=>{
+      const sel=checks.filter(c=>c.checked);
+      if(sel.length>2) ch.checked=false;
+      upd();
+    });
+  }); upd();
+}
+
+/* ---------- Highlight add & per-highlight remove ---------- */
+let selectionRange=null, currentHL=null;
+const addTb=document.getElementById('addToolbar');
+const rmTb=document.getElementById('removeToolbar');
+
+function placeToolbar(tb, x, y){
+  tb.style.left = (x + window.scrollX) + 'px';
+  tb.style.top  = (y + window.scrollY) + 'px';
+  tb.style.display='block';
+}
+function hideToolbars(){ addTb.style.display='none'; rmTb.style.display='none'; }
+
+function wrapSelection(range){
+  const span=document.createElement('span');
+  span.className='hl';
+  const frag=range.cloneContents();
+  span.appendChild(frag);
+  range.deleteContents();
+  range.insertNode(span);
+  return span;
+}
+function unwrap(el){
+  const p=el.parentNode;
+  while(el.firstChild){ p.insertBefore(el.firstChild, el); }
+  p.removeChild(el);
+}
+
+document.addEventListener('mouseup',(e)=>{
+  if(e.target.closest('.mini-toolbar')) return;
+  const sel=window.getSelection();
+  if(sel && sel.rangeCount && sel.toString().trim().length>0){
+    selectionRange = sel.getRangeAt(0).cloneRange();
+    const rect=selectionRange.getBoundingClientRect();
+    placeToolbar(addTb, rect.left, rect.top - 36);
+  }else{
+    hideToolbars();
+  }
+});
+
+document.getElementById('addHL').addEventListener('click',()=>{
+  if(!selectionRange) return;
+  const span = wrapSelection(selectionRange);
+  hideToolbars();
+  try{window.getSelection().removeAllRanges();}catch(_){}
+  selectionRange=null;
+});
+
+document.addEventListener('click',(e)=>{
+  if(e.target.classList && e.target.classList.contains('hl')){
+    currentHL = e.target;
+    const rect = currentHL.getBoundingClientRect();
+    placeToolbar(rmTb, rect.right + 6, rect.top);
+  }else if(!e.target.closest('.mini-toolbar')){
+    rmTb.style.display='none';
+  }
+});
+
+document.getElementById('removeHL').addEventListener('click',()=>{
+  if(currentHL){ unwrap(currentHL); currentHL=null; }
+  rmTb.style.display='none';
+});
+
+/* ---------- Part switching & listeners ---------- */
+function showPart(n){
+  document.querySelectorAll('.test-part').forEach((s, i) => {
+    s.classList.toggle('active', i === n - 1);
+  });
+  document.querySelectorAll('.sub-nav').forEach((nav, i) => {
+    nav.style.display = (i === n - 1) ? 'flex' : 'none';
+  });
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) {}
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  
+  /* --- Turn off browser suggestions/autofill for text inputs --- */
+  (function disableAutocomplete(){
+    const els = document.querySelectorAll('.text-input, textarea');
+    els.forEach(el => {
+      el.setAttribute('autocomplete','off');
+      el.setAttribute('autocorrect','off');
+      el.setAttribute('autocapitalize','off');
+      el.setAttribute('spellcheck','false');
+      // Randomize 'name' to avoid reuse of previous entries keyed by name
+      const base = (el.getAttribute('id') || 'fld');
+      el.setAttribute('name', base + '_' + Math.random().toString(36).slice(2));
+      // As a fallback for stubborn browsers, briefly set readonly until first focus
+      el.setAttribute('readonly', 'readonly');
+      el.addEventListener('pointerdown', () => { el.removeAttribute('readonly'); }, { once: true });
+      el.addEventListener('focus',      () => { el.removeAttribute('readonly'); }, { once: true });
+    });
+  })();
+
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();
+      const q=parseInt(btn.dataset.q,10);
+      const part = q<=13?1 : q<=26?2 : q<=39?3 : 4;
+      showPart(part);
+      const target=document.getElementById(btn.getAttribute('href').substring(1));
+      if(target) target.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+  });
+
+  document.querySelectorAll('.text-input').forEach(i=>i.addEventListener('input',updateProgress));
+  document.querySelectorAll('select').forEach(s=>s.addEventListener('change',updateProgress));
+
+  initDrag('opts14');
+  initDrag('opts27');
+
+  ['g1','g2','g3'].forEach(initTwoOfFive);
+
+  document.getElementById('submit-btn').addEventListener('click', async () => { if(!TEST_STARTED){ openGate(); return; } await submitAnswers(); });
+
+  updateProgress();
+  showPart(1);
+});
+</script>
+</body>
+</html>
